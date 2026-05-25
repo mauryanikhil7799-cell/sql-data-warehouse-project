@@ -1,49 +1,59 @@
-Drop database datawarehouse
 /*
 ======================================================================
-Create dtatabase and schemas
+Create Database and Schemas
 ======================================================================
-Script purpose:
-	This script create a new database name 'Datawarehouse' after checking if it is already exists.
-	if the database exists, it is droped and recretae. Additionlly, the scripts sets up th three schemas
-	with the datasets 'bronze, silver, gold'.
+Script Purpose:
+    This script creates a new database named 'DataWarehouse' after
+    checking whether it already exists.
 
-WARNING
-	Running this scripts will drops the entire 'Datawarehouse' database if it exsits.
-	All data in the database will be parmaentaly deleted. Procced with caution
-	and ensure you have proper backup before running this script.
-	*/
+    If the database exists, it is dropped and recreated.
+    Additionally, the script sets up three schemas:
+        - bronze
+        - silver
+        - gold
 
---Create Database 'Datawarehouse'
+WARNING:
+    Running this script will drop the entire 'DataWarehouse' database
+    if it already exists.
 
+    All data in the database will be permanently deleted.
+    Proceed with caution and ensure you have proper backups before
+    running this script.
+======================================================================
+*/
+
+-- Use master database
 USE master;
-Go
+GO
 
---Drop and recreate the 'Datawarehouse' database
-IF EXISTS (SELECT 1 FROM sys.databases WHERE NAME ='DataWarehouse')
+-- Drop and recreate the 'DataWarehouse' database
+IF EXISTS (
+    SELECT 1
+    FROM sys.databases
+    WHERE name = 'DataWarehouse'
+)
 BEGIN
-	ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE
-	DROP DATABASE DataWarehouse;
+    ALTER DATABASE DataWarehouse
+    SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+
+    DROP DATABASE DataWarehouse;
 END;
 GO
 
-
----Create the 'DataWarehouse' database
-
+-- Create the 'DataWarehouse' database
 CREATE DATABASE DataWarehouse;
-
-USE DataWarehouse
-
 GO
 
---Create Schemas
+-- Switch to DataWarehouse database
+USE DataWarehouse;
+GO
 
+-- Create Schemas
 CREATE SCHEMA bronze;
-
 GO
+
 CREATE SCHEMA silver;
-
 GO
-CREATE SCHEMA gold;
 
+CREATE SCHEMA gold;
 GO
