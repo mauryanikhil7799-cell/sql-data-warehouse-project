@@ -1,0 +1,179 @@
+
+---SQL Retail sales analysis-P1---
+
+--- Creating New Database---
+----Waring When you run this script all privious data will be delete ----
+USE master;
+GO
+IF DB_ID('Project_p1') IS NOT NULL
+BEGIN
+	ALTER DATABASE Project_p1
+	SET SINGLE_USER
+	WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE Project_p1
+END
+GO
+CREATE DATABASE Project_p1
+GO
+USE Project_p1
+
+---Run this Script to Create New Tables
+DROP TABLE IF EXISTS Project_p1;
+GO
+Create Table Retail_Sales(
+							transactions_id INT,
+							sale_date DATE,
+							sale_time TIME,
+							customer_id INT,
+							gender VARCHAR(15),
+							age INT,
+							category VARCHAR(15),
+							quantiy INT,
+							price_per_unit FLOAT,
+							cogs FLOAT,
+							total_sale FLOAT,
+)
+
+---Run this Sript to Inserting Table data
+BULK INSERT Retail_Sales
+FROM "C:\Users\Asus\Desktop\SQL Projects\Date 09 Sep 2026\SQL - Retail Sales Analysis_utf  (1).csv"
+WITH(
+	FORMAT='CSV',
+	FIRSTROW=2,
+	FIELDQUOTE='"',
+	TABLOCK
+);
+-----Data Cleaning--------
+--- Checking nulls value in dataset
+SELECT*
+FROM Retail_Sales
+WHERE quantiy IS NULL
+OR sale_date IS NULL
+OR sale_time IS NULL
+OR customer_id IS NULL
+OR gender IS NULL
+OR age IS NULL
+OR category IS NULL
+OR quantiy IS NULL
+OR price_per_unit IS NULL
+OR cogs IS NULL
+OR total_sale IS NULL;
+
+--- Deleting NULL VALUE FROM DATASET---
+DELETE FROM Retail_Sales
+WHERE quantiy IS NULL
+OR sale_date IS NULL
+OR sale_time IS NULL
+OR customer_id IS NULL
+OR gender IS NULL
+OR category IS NULL
+OR quantiy IS NULL
+OR price_per_unit IS NULL
+OR cogs IS NULL
+OR total_sale IS NULL;
+
+---Data Exploration---
+
+---Run This Script to Query all Data--
+SELECT*
+FROM Retail_Sales
+
+----Run This Script to know How Many sales we have ---
+SELECT  COUNT(*) AS Total_Sales
+FROM Retail_Sales
+
+---Run This Script to know How many uniqe Customer we have
+Select 
+COUNT( DISTINCT(customer_id))
+FROM Retail_Sales
+
+
+---Run This Script to know How many uniqe category we have
+Select 
+DISTINCT(category)
+FROM Retail_Sales
+
+----Run This Script to know Data Analysis & Business Key Problems and Answer
+
+---Wrtie down all sales as on 05-11-2022
+Select*
+From Retail_Sales
+WHERE sale_date= '2022-11-05'
+
+
+---Wrtie down all query where sales is more than 04 and category is clothing in the month of Nov 2022
+Select*
+FROM Retail_Sales
+WHERE category='clothing'
+AND sale_date BETWEEN '2022-11-01' AND '2022-11-30'
+AND quantiy=4
+
+--- Run This Script to know  all the sum of sales for all the category and total order
+SELECT
+SUM(total_sale) AS Total_sales,
+COUNT(*) AS Total_orders,
+category
+FROM Retail_Sales
+GROUP BY category;
+
+--- write a query to to get average age of customer who purchase beauty caategory product
+SELECT
+AVG(AGE) AS Avg_Age
+FROM Retail_Sales
+where category = 'Beauty'
+
+--- Write down a query where total_sale is more than 1000
+SELECT*
+FROM Retail_Sales
+WHERE total_sale >1000
+
+---- Write a query to get the total no of transaction by each Gender
+SELECT
+category,
+gender,
+COUNT(*) TOTAL_Tansaction
+FROM Retail_Sales
+GROUP BY category,gender
+ORDER BY gender
+
+
+----Write a query to find out avg sales of each month and what is the highest sales of each month in a year
+
+SELECT
+YEAR(sale_date)AS Years,
+MONTH (sale_date)AS Months,
+AVG(total_sale) AS Avg_Sales,
+MAX(total_sale) AS Highest_Sales
+FROM Retail_Sales
+GROUP BY
+YEAR(sale_date),
+MONTH (sale_date)
+ORDER BY Years,Months;
+
+---Write down top five customer based on Total highest sales
+Select
+TOP 5 customer_id,
+SUM(total_sale) AS Total_sales
+FROM Retail_Sales
+GROUP BY customer_id
+ORDER BY Total_sales
+
+---- write a query to find the number unique customer who have purchase items from each category
+SELECT
+category,
+COUNT(DISTINCT(customer_id))
+FROM Retail_Sales
+GROUP BY category
+
+--- WRITE A SQL query to  craete each shift and Number of order(Example morning<=12,Afternoon between 12 to 17,Evening<17)
+SELECT
+COUNT(transactions_id) AS Total_Order,
+CASE WHEN sale_time <= '12:00:00.0000000' THEN 'Morning_shift'
+	 WHEN sale_time > '12:00:00.0000000'THEN 'Afternoon_shift'
+	 ELSE 'Evening_Shift'
+END AS Shift_Name
+FROM Retail_Sales
+GROUP BY CASE WHEN sale_time <= '12:00:00.0000000' THEN 'Morning_shift'
+	 WHEN sale_time > '12:00:00.0000000'THEN 'Afternoon_shift'
+	 ELSE 'Evening_Shift'
+END;
