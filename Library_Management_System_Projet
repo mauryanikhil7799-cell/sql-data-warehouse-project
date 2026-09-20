@@ -1,0 +1,324 @@
+--- Library_Management_System_Projet---
+---Creating New Database---
+-----Waring Do not Runthis script unless you have Backup data it will delete the privous Database and create a Newone----
+USE master
+IF DB_ID ('Library_Management_System_Projet') IS NOT NULL
+BEGIN
+	ALTER DATABASE Library_Management_System_Projet
+	SET SINGLE_USER
+	WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE Library_Management_System_Projet
+END;
+
+---Script for new Database---
+GO
+CREATE DATABASE Library_Management_System_Projet
+GO
+
+---Script to use new Database---
+USE Library_Management_System_Projet
+
+----Script to cretae new Table----
+----Run this Script to create Branch Table----
+DROP TABLE IF EXISTS Branch
+GO
+CREATE TABLE Branch(
+	branch_id VARCHAR(20) PRIMARY KEY,
+	manager_id VARCHAR(20),
+	branch_address VARCHAR(100),
+	contact_no VARCHAR(10)
+)
+
+----Run this Script to create Employees Table----
+DROP TABLE IF EXISTS Employees
+GO
+CREATE TABLE Employees(
+	emp_id VARCHAR(20) PRIMARY KEY,
+	emp_name VARCHAR(25),
+	position VARCHAR(25),
+	salary INT,
+	branch_id VARCHAR(20)
+)
+
+----Run this Script to create Books Table----
+DROP TABLE IF EXISTS Books
+GO
+CREATE TABLE Books(
+	isbn VARCHAR(25) PRIMARY KEY,
+	book_title VARCHAR(100),
+	category VARCHAR(50),
+	rental_price DECIMAL(10,2),
+	status VARCHAR(25),
+	author VARCHAR(100),
+	publisher VARCHAR(100)
+)
+
+----Run this Script to create Issued_Stauts Table----
+DROP TABLE IF EXISTS Issued_Stauts
+GO
+CREATE TABLE Issued_Stauts(
+	issued_id VARCHAR(100) PRIMARY KEY,
+	issued_member_id VARCHAR(10),
+	issued_book_name VARCHAR(100),
+	issued_date DATE,
+	issued_book_isbn VARCHAR(25),
+	issued_emp_id VARCHAR(20)
+)
+
+----Run this Script to create Members Table----
+DROP TABLE IF EXISTS Members
+GO
+CREATE TABLE Members(
+	member_id VARCHAR(10) PRIMARY KEY,
+	member_name VARCHAR(30),
+	member_address VARCHAR(30),
+	reg_date DATE
+)
+----Run this Script to create Return_Status----
+DROP TABLE IF EXISTS Return_Status
+GO
+CREATE TABLE Return_Status(
+	return_id VARCHAR(30) PRIMARY KEY,
+	issued_id VARCHAR(100),
+	return_book_name VARCHAR(100),
+	return_date DATE,
+	return_book_isbn VARCHAR(25)
+)
+
+----Adding Foreign Key for Refrence
+--Issued_Status to Members--
+ALTER TABLE Issued_Stauts
+ADD CONSTRAINT fk_members
+FOREIGN KEY(issued_member_id)
+REFERENCES Members(member_id);
+
+--Issued_Status to Books--
+ALTER TABLE Issued_Stauts
+ADD CONSTRAINT fk_Books
+FOREIGN KEY(issued_book_isbn)
+REFERENCES Books(isbn);
+
+--Issued_Status to Employees--
+ALTER TABLE Issued_Stauts
+ADD CONSTRAINT fk_Employees
+FOREIGN KEY(issued_emp_id)
+REFERENCES Employees(emp_id);
+
+--Employees to Branch--
+ALTER TABLE Employees
+ADD CONSTRAINT fk_Branch
+FOREIGN KEY(branch_id)
+REFERENCES Branch(branch_id);
+
+--Issued_Status to Return_Status--
+ALTER TABLE Return_Status
+ADD CONSTRAINT fk_Return_Status
+FOREIGN KEY (issued_id)
+REFERENCES Issued_Stauts(issued_id);
+
+----INSERTING DATA IN THE PREPARED TABLE----
+---BULK INSRT OF BRANCH TABLE---
+BULK INSERT Branch
+FROM 'C:\Users\Asus\Desktop\SQL Projects\Date 13 Sep 2026\Library-System-Management---P2-main\branch.csv'
+WITH
+(
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '0x0a',
+    TABLOCK
+);
+---CHECKING INSERT DATA---
+SELECT*
+FROM BRANCH
+
+---BULK INSRT OF BOOKS TABLE---
+BULK INSERT BOOKS
+FROM 'C:\Users\Asus\Desktop\SQL Projects\Date 13 Sep 2026\Library-System-Management---P2-main\books.csv'
+WITH
+(
+	FORMAT='CSV',
+	FIRSTROW=2,
+	TABLOCK
+);
+---CHECKING INSERT DATA---
+SELECT*
+FROM Books
+
+---BULK INSRT OF EMPLOYEE TABLE---
+BULK INSERT Employees
+FROM 'C:\Users\Asus\Desktop\SQL Projects\Date 13 Sep 2026\Library-System-Management---P2-main\employees.csv'
+WITH
+(
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+     ROWTERMINATOR = '0x0d0a',
+    TABLOCK
+);
+
+
+---CHECKING INSERT DATA---
+SELECT*
+FROM Employees
+
+---BULK INSRT OF Issued_Status TABLE---
+BULK INSERT Issued_Stauts
+FROM 'C:\Users\Asus\Desktop\SQL Projects\Date 13 Sep 2026\Library-System-Management---P2-main\issued_status.csv'
+WITH
+(
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '0x0d0a',
+    TABLOCK
+);
+---CHECKING INSERT DATA---
+SELECT*
+FROM Issued_Stauts
+
+---BULK INSRT OF Members TABLE---
+BULK INSERT Members
+FROM 'C:\Users\Asus\Desktop\SQL Projects\Date 13 Sep 2026\Library-System-Management---P2-main\members.csv'
+WITH
+(
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '0x0a',
+    TABLOCK
+);
+---CHECKING INSERT DATA---
+SELECT*
+FROM Members
+
+---BULK INSRT OF Return_Status TABLE---
+BULK INSERT Return_Status
+FROM 'C:\Users\Asus\Desktop\SQL Projects\Date 13 Sep 2026\Library-System-Management---P2-main\return_status.csv'
+WITH
+(
+    FORMAT = 'CSV',
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '0x0a',
+    TABLOCK
+);
+---CHECKING INSERT DATA---
+SELECT*
+FROM Return_Status;
+
+---Project Task
+
+--- Task-1 Craete a new Book Record --'978-1-60129-456-2', 'TO Killl a Mocking Bird','Classic',6.00,'Yes','Harper Lee','J.B.Lippincott & co.')"
+INSERT INTO Books(	isbn,book_title,category,rental_price,status,author,publisher)
+VALUES(
+'978-1-60129-456-2','TO Killl a Mocking Bird','Classic','6.00','Yes','Harper Lee','J.B.Lippincott & co.')
+
+--- Task-2 Update an Existing Member address---
+UPDATE Members
+SET member_address='125 Main St'
+WHERE member_id ='C101'
+SELECT* FROM Members
+
+--- Task-3 Delete an Existing Record from Issued TabLe WHERE Issues id is 'IS121---
+SELECT*
+FROM Issued_Stauts
+
+DELETE 
+FROM Issued_Stauts
+WHERE issued_id='IS121'
+
+
+--- Task-4 Query all the books issued by EMP. Id E108---
+SELECT*
+FROM Issued_Stauts
+WHERE issued_emp_id='E108';
+
+---Task-5 List the member who issue more than one Book use Group By
+SELECT
+issued_member_id,
+COUNT(*) AS Total_Books_issued
+FROM Issued_Stauts
+GROUP BY issued_member_id
+HAVING COUNT(*)>1;
+
+---CTAS
+--- Task-1 Craete a summary Tables: Used CATS genrate new tables based on the query result -Each book and total book_issued_cnt---
+SELECT
+b.isbn,
+B.book_title,
+COUNT(i.issued_book_isbn) AS Total_time_issued
+INTO books_cnt
+FROM Books AS b
+LEFT JOIN Issued_Stauts AS i
+ON isbn=issued_book_isbn
+GROUP BY b.isbn,
+B.book_title
+
+
+
+--- TASK-7 WRITE AN QUERY TO GENRATE NO.BOOK ISSUED CATEGORYWISE
+SELECT
+category,
+COUNT(issued_book_isbn) AS no_of_books_issued
+FROM Issued_Stauts AS i
+LEFT JOIN BOOKS AS b
+ON isbn=issued_book_isbn
+GROUP BY category
+
+--- TASK-8 WRITE AN QUERY TO GENRATE TOTAL INCOME ISSUED BY CATEGORY
+SELECT
+b.category,
+COUNT(*) AS No_Book_issued,
+SUM(b.rental_price) AS Total_Income
+FROM Issued_Stauts AS i
+LEFT JOIN BOOKS AS b
+ON isbn=issued_book_isbn
+GROUP BY b.category
+ORDER BY Total_Income DESC
+
+---TASK-9 INSERT NEW DATA IN MEMBERS TABLE
+INSERT INTO Members(
+member_id,member_name,member_address,reg_date)
+VALUES 
+	('C120','Nikhil','121 mohan Road','2026-05-06'),
+	('C121','Vineet','122 Sitapur Road','2026-05-07')
+
+
+---Task -10 MEMBER WHO REGISTER IN LAST 180 DAYS
+SELECT*
+FROM Members
+WHERE reg_date>=CAST(DATEADD(DAY,-180,GETDATE()) AS DATE);
+
+---SELECT EMPLOYEE WITH THIER MANAGER AND THIER BRANCH---
+SELECT
+e1.emp_id,e1.emp_name,e1.position,e1.salary,e1.branch_id,e2.emp_id,e2.emp_name,e2.position
+FROM Employees AS e1
+JOIN Branch AS b
+ON e1.branch_id = b.branch_id
+JOIN Employees AS e2
+on b.manager_id=e2.emp_id
+
+--- TASK-12 Write an query to create a new table where rental price is above 06USD dollar
+SELECT*
+INTO High_renta_Books
+FROM Books
+WHERE rental_price>'6'
+
+---CHECKING NEW DATA
+SELECT*
+FROM High_renta_Books
+
+--- TASK-13 SELECT ALL THE BOOK WHICH HAS BEEN NOT RETUN
+SELECT
+i.issued_id,
+i.issued_member_id,
+i.issued_book_name,
+i.issued_date,
+i.issued_book_isbn,
+i.issued_emp_id
+FROM Issued_Stauts AS i
+LEFT JOIN Return_Status AS r
+ON i.issued_id=r.issued_id
+WHERE r.return_date IS NULL
+
