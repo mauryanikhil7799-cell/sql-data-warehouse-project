@@ -1,40 +1,52 @@
-# Data Warehouse and analytics projects
+# Hi, I'm Nikhil Kumar Maurya 👋
 
-Welcome to the **Data warehouse and Analytics Project** repository
-This project demonstrates a compernesive data warehouseing and analytics solution, from building a datawarehouse to generating actionable insights. Designed as a portfolio project highlights industry best practices in data engineering and analytics.
+### SQL | Data Analytics | Microsoft SQL Server
 
----
+I am building my career in SQL and Data Analytics, with a focus on **Microsoft SQL Server, T-SQL, data cleaning, database design, reporting, and business analysis**.
 
-## Project Requirments
+### 🛠️ Skills
 
-### Building the data Warehouse(Data engineering)
+* SQL Server / T-SQL
+* SQL Joins & Subqueries
+* CTEs & Window Functions
+* Aggregations & Business Analysis
+* Stored Procedures
+* Views & Functions
+* Data Cleaning & Validation
+* Database Design
+* CSV Data Import / ETL
+* Git & GitHub
+* Excel
+* Tableau
 
-#### Objectives
--**Data Sources**: Import data from two source system (ERP AND CRM) provided as csv files
--**Data Quality**: Cleanse the data resolve data quality issue prior to analysis.
--**Integration**: Combine both sources into a single, user friendly data modle designed for analytics quries
--**Scope**: Focuse on the letest dataset only; historization of datasets is not required.
--**Documentation**: Provide clear documentaion of data model to support both biusiness stakeholders and analytics teams.
+### 📂 Featured Projects
 
+**SQL Data Warehouse & Analytics**
 
+* Built a SQL Server data warehouse
+* Implemented ETL and data cleaning
+* Designed analytical data models
+* Created SQL-based business analysis
 
+**Library Management System – SQL Server**
 
-----
+* Designed relational database tables
+* Implemented primary and foreign keys
+* Imported CSV data
+* Used joins, aggregations, subqueries and date functions
+* Created business-oriented SQL analysis
 
-### BI: Analytics & Reporting(Data Analytics)
+### 🎯 Currently Learning
 
-#### Objectives
-Develop SQL-based analytics to deliver detailed insights into:
--**Customer behaviour**
--**Poduct Performance**
--**Sales Trends**
+* Advanced SQL
+* Window Functions
+* CTEs
+* Stored Procedures
+* Query Optimization
+* Data Analytics
+* Power BI / Tableau
 
-These insights empower stakeholder with key business metrics, enabling strategic decision making.
+### 📫 Connect with me
 
-## License
-
-This Project is License under the (MIT License).(License) you are free to use, Modify and share this project with proper attribution.
-
-### About Me
-
-Hii I am Nikhil Kumar maurya and i am from non-Tech Background and this is my second attempt to compelte this project and i want to be a Analytics. I also practice Tableau this**https://public.tableau.com/app/profile/nikhil.maurya6362** is my profile you can checjk my Projects.
+LinkedIn: [Add your LinkedIn profile]
+Tableau: [Add your Tableau profile]
