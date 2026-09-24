@@ -47,6 +47,5 @@ I am building my career in SQL and Data Analytics, with a focus on **Microsoft S
 * Power BI / Tableau
 
 ### 📫 Connect with me
-
-LinkedIn: [Add your LinkedIn profile]
-Tableau: [Add your Tableau profile]
+Phone No--6387481261
+Email No.mauryanikhil7788@gmail.com
