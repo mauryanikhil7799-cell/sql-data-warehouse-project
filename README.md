@@ -48,4 +48,4 @@ I am building my career in SQL and Data Analytics, with a focus on **Microsoft S
 
 ### 📫 Connect with me
 Phone No--6387481261
-Email No.mauryanikhil7788@gmail.com
+Email .mauryanikhil7788@gmail.com
